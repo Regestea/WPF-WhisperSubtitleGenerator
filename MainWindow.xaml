@@ -5,8 +5,326 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_WhisperSubtitleGenerator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Whisper Subtitle Generator" Height="700" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a2e">
+    <Window.Resources>
+        <!-- Neon Colors -->
+        <Color x:Key="NeonCyan">#00f5ff</Color>
+        <Color x:Key="NeonPink">#ff00ff</Color>
+        <Color x:Key="NeonPurple">#bf00ff</Color>
+        <Color x:Key="DarkBg">#1a1a2e</Color>
+        <Color x:Key="DarkCard">#16213e</Color>
+        <Color x:Key="DarkBorder">#0f3460</Color>
+        
+        <SolidColorBrush x:Key="NeonCyanBrush" Color="{StaticResource NeonCyan}"/>
+        <SolidColorBrush x:Key="NeonPinkBrush" Color="{StaticResource NeonPink}"/>
+        <SolidColorBrush x:Key="NeonPurpleBrush" Color="{StaticResource NeonPurple}"/>
+        <SolidColorBrush x:Key="DarkBgBrush" Color="{StaticResource DarkBg}"/>
+        <SolidColorBrush x:Key="DarkCardBrush" Color="{StaticResource DarkCard}"/>
+        <SolidColorBrush x:Key="DarkBorderBrush" Color="{StaticResource DarkBorder}"/>
 
+        <!-- Neon Button Style -->
+        <Style x:Key="NeonButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource NeonCyanBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource NeonCyanBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource NeonCyan}" BlurRadius="10" ShadowDepth="0" Opacity="0.5"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2000f5ff"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="{StaticResource NeonCyan}" BlurRadius="20" ShadowDepth="0" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#4000f5ff"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Pink Neon Button Style -->
+        <Style x:Key="NeonButtonPink" TargetType="Button" BasedOn="{StaticResource NeonButton}">
+            <Setter Property="Foreground" Value="{StaticResource NeonPinkBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource NeonPinkBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource NeonPink}" BlurRadius="10" ShadowDepth="0" Opacity="0.5"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#20ff00ff"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="{StaticResource NeonPink}" BlurRadius="20" ShadowDepth="0" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#40ff00ff"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Text Box Style -->
+        <Style x:Key="NeonTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource DarkCardBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DarkBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CaretBrush" Value="{StaticResource NeonCyanBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource NeonCyanBrush}"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="{StaticResource NeonCyan}" BlurRadius="10" ShadowDepth="0" Opacity="0.5"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBox Style -->
+        <Style x:Key="NeonComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="{StaticResource DarkCardBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DarkBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <!-- Progress Bar Style -->
+        <Style x:Key="NeonProgressBar" TargetType="ProgressBar">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Background" Value="{StaticResource DarkCardBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DarkBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Border x:Name="PART_Track" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <Border x:Name="PART_Indicator" 
+                                    HorizontalAlignment="Left"
+                                    CornerRadius="10"
+                                    Margin="2">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="{StaticResource NeonCyan}" Offset="0"/>
+                                        <GradientStop Color="{StaticResource NeonPink}" Offset="0.5"/>
+                                        <GradientStop Color="{StaticResource NeonPurple}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect Color="{StaticResource NeonPink}" BlurRadius="15" ShadowDepth="0" Opacity="0.8"/>
+                                </Border.Effect>
+                            </Border>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="40">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" 
+                   Text="🎬 Whisper Subtitle Generator" 
+                   FontSize="32" 
+                   FontWeight="Bold" 
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,30">
+            <TextBlock.Foreground>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="{StaticResource NeonCyan}" Offset="0"/>
+                    <GradientStop Color="{StaticResource NeonPink}" Offset="0.5"/>
+                    <GradientStop Color="{StaticResource NeonPurple}" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+            <TextBlock.Effect>
+                <DropShadowEffect Color="{StaticResource NeonCyan}" BlurRadius="20" ShadowDepth="0" Opacity="0.6"/>
+            </TextBlock.Effect>
+        </TextBlock>
+
+        <!-- Input File Section -->
+        <Border Grid.Row="1" Background="{StaticResource DarkCardBrush}" CornerRadius="10" Padding="20" Margin="0,0,0,15">
+            <Border.Effect>
+                <DropShadowEffect Color="{StaticResource NeonCyan}" BlurRadius="5" ShadowDepth="0" Opacity="0.2"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="📁 Input File:" Foreground="{StaticResource NeonCyanBrush}" 
+                           VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Margin="0,0,15,0"/>
+                <TextBox Grid.Column="1" x:Name="InputFileTextBox" Style="{StaticResource NeonTextBox}" 
+                         IsReadOnly="True" Margin="0,0,15,0"/>
+                <Button Grid.Column="2" Content="Browse" Style="{StaticResource NeonButton}" 
+                        Click="BrowseInput_Click" Width="100"/>
+            </Grid>
+        </Border>
+
+        <!-- Output File Section -->
+        <Border Grid.Row="2" Background="{StaticResource DarkCardBrush}" CornerRadius="10" Padding="20" Margin="0,0,0,15">
+            <Border.Effect>
+                <DropShadowEffect Color="{StaticResource NeonPink}" BlurRadius="5" ShadowDepth="0" Opacity="0.2"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="💾 Save To:" Foreground="{StaticResource NeonPinkBrush}" 
+                           VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Margin="0,0,15,0"/>
+                <TextBox Grid.Column="1" x:Name="OutputFileTextBox" Style="{StaticResource NeonTextBox}" 
+                         IsReadOnly="True" Margin="0,0,15,0"/>
+                <Button Grid.Column="2" Content="Browse" Style="{StaticResource NeonButtonPink}" 
+                        Click="BrowseSavePath_Click" Width="100"/>
+            </Grid>
+        </Border>
+
+        <!-- Progress Section -->
+        <Border Grid.Row="3" Background="{StaticResource DarkCardBrush}" CornerRadius="10" Padding="20" Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock x:Name="StatusText" Text="Ready to process..." Foreground="White" FontSize="14" 
+                               TextTrimming="CharacterEllipsis" MaxWidth="700"/>
+                    <TextBlock x:Name="ProgressPercentText" Text="0%" Foreground="{StaticResource NeonCyanBrush}" 
+                               FontSize="14" FontWeight="Bold" HorizontalAlignment="Right"/>
+                </Grid>
+                <ProgressBar Grid.Row="1" x:Name="ProgressBar" Style="{StaticResource NeonProgressBar}" 
+                             Minimum="0" Maximum="100" Value="0"/>
+                <TextBlock Grid.Row="2" x:Name="TimeInfoText" Text="" Foreground="#888" FontSize="12" 
+                           HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <!-- Current Dialog Display -->
+                <Border Grid.Row="3" Background="#0f3460" CornerRadius="8" Padding="15" Margin="0,10,0,0"
+                        x:Name="CurrentDialogBorder" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="🎤 Current Dialog:" Foreground="{StaticResource NeonPinkBrush}" 
+                                   FontSize="12" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBlock Grid.Row="1" x:Name="CurrentDialogText" Text="" Foreground="White" 
+                                   FontSize="16" FontStyle="Italic" TextWrapping="Wrap" MaxHeight="60">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="{StaticResource NeonCyan}" BlurRadius="5" ShadowDepth="0" Opacity="0.3"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Log Section -->
+        <Border Grid.Row="4" Background="{StaticResource DarkCardBrush}" CornerRadius="10" Padding="15" Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="📋 Transcription Log" Foreground="{StaticResource NeonCyanBrush}" 
+                           FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="LogTextBox" 
+                             Background="Transparent" 
+                             Foreground="#aaa" 
+                             BorderThickness="0"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             FontFamily="Consolas"
+                             FontSize="12"
+                             VerticalScrollBarVisibility="Auto"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Generate Button -->
+        <Button Grid.Row="5" x:Name="GenerateButton" Content="🚀 Generate Subtitles" 
+                Style="{StaticResource NeonButtonPink}" 
+                Click="Generate_Click" 
+                Height="50" FontSize="18"
+                IsEnabled="False"/>
     </Grid>
 </Window>
