@@ -280,23 +280,25 @@ namespace WPF_WhisperSubtitleGenerator
                 // Resample to 16kHz
                 var resampler = new NAudio.Wave.SampleProviders.WdlResamplingSampleProvider(reader, 16000);
                 
-                // Convert to mono if stereo
-                var monoProvider = resampler.WaveFormat.Channels > 1
-                    ? new NAudio.Wave.SampleProviders.StereoToMonoSampleProvider(resampler)
-                    : (ISampleProvider)resampler;
-
+                int channels = resampler.WaveFormat.Channels;
                 var outFormat = new WaveFormat(16000, 16, 1);
                 
                 using (var waveFileWriter = new WaveFileWriter(tempPath, outFormat))
                 {
-                    float[] buffer = new float[4096];
+                    float[] buffer = new float[4096 * channels];
                     int samplesRead;
-                    while ((samplesRead = monoProvider.Read(buffer, 0, buffer.Length)) > 0)
+                    while ((samplesRead = resampler.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                        // Convert float samples to 16-bit PCM
-                        for (int i = 0; i < samplesRead; i++)
+                        // Convert multi-channel to mono by averaging all channels
+                        for (int i = 0; i < samplesRead; i += channels)
                         {
-                            var sample = (short)(Math.Clamp(buffer[i], -1.0f, 1.0f) * short.MaxValue);
+                            float sum = 0;
+                            for (int ch = 0; ch < channels && (i + ch) < samplesRead; ch++)
+                            {
+                                sum += buffer[i + ch];
+                            }
+                            float monoSample = sum / channels;
+                            var sample = (short)(Math.Clamp(monoSample, -1.0f, 1.0f) * short.MaxValue);
                             waveFileWriter.WriteByte((byte)(sample & 0xff));
                             waveFileWriter.WriteByte((byte)((sample >> 8) & 0xff));
                         }

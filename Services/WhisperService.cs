@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows;
 using Whisper.net;
 
 namespace WPF_WhisperSubtitleGenerator.Services
@@ -12,6 +13,8 @@ namespace WPF_WhisperSubtitleGenerator.Services
         private WhisperProcessor? _processor;
         private string? _modelPath;
         private bool _isModelLoaded;
+        private string? _previousText;
+        private int _repeatCount;
 
         public bool IsModelLoaded => _isModelLoaded;
 
@@ -43,6 +46,8 @@ namespace WPF_WhisperSubtitleGenerator.Services
             // Create processor once
             _processor = _factory.CreateBuilder()
                 .WithLanguage(language)
+                .WithTemperature(1f)
+                .WithMaxLastTextTokens(0)
                 .Build();
                 
             _isModelLoaded = true;
@@ -89,6 +94,23 @@ namespace WPF_WhisperSubtitleGenerator.Services
                         End = result.End,
                         Text = result.Text.Trim()
                     };
+
+                    // Check if current text equals previous text
+                    // if (!string.IsNullOrEmpty(_previousText) && segment.Text == _previousText)
+                    // {
+                    //     _repeatCount++;
+                    //     if (_repeatCount >= 3)
+                    //     {
+                    //         MessageBox.Show($"Text repeated 3 times at {segment.Start:hh\\:mm\\:ss\\.fff} - {segment.End:hh\\:mm\\:ss\\.fff}",
+                    //             "Duplicate Segment", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //     }
+                    // }
+                    // else
+                    // {
+                    //     _repeatCount = 1;
+                    // }
+                    
+                    _previousText = segment.Text;
 
                     segments.Add(segment);
                     onSegmentTranscribed?.Invoke(segment);

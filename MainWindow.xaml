@@ -243,17 +243,35 @@
                 <DropShadowEffect Color="{StaticResource NeonPink}" BlurRadius="5" ShadowDepth="0" Opacity="0.2"/>
             </Border.Effect>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="💾 Save To:" Foreground="{StaticResource NeonPinkBrush}" 
-                           VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Margin="0,0,15,0"/>
-                <TextBox Grid.Column="1" x:Name="OutputFileTextBox" Style="{StaticResource NeonTextBox}" 
-                         IsReadOnly="True" Margin="0,0,15,0"/>
-                <Button Grid.Column="2" Content="Browse" Style="{StaticResource NeonButtonPink}" 
-                        Click="BrowseSavePath_Click" Width="100"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="💾 Save To:" Foreground="{StaticResource NeonPinkBrush}" 
+                               VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Margin="0,0,15,0"/>
+                    <TextBox Grid.Column="1" x:Name="OutputFileTextBox" Style="{StaticResource NeonTextBox}" 
+                             IsReadOnly="True" Margin="0,0,15,0"/>
+                    <Button Grid.Column="2" Content="Browse" Style="{StaticResource NeonButtonPink}" 
+                            Click="BrowseSavePath_Click" Width="100"/>
+                </Grid>
+
+                <!-- Extract Text Only Checkbox -->
+                <CheckBox Grid.Row="1" x:Name="ExtractTextOnlyCheckBox" Content="Extract Text Only" 
+                          Foreground="{StaticResource NeonPinkBrush}" FontSize="14" FontWeight="Bold" 
+                          Margin="0,10,0,0" VerticalAlignment="Center" 
+                          Background="White" BorderBrush="{StaticResource NeonPinkBrush}" 
+                          BorderThickness="2">
+                    <CheckBox.Effect>
+                        <DropShadowEffect Color="{StaticResource NeonPink}" BlurRadius="10" ShadowDepth="0" Opacity="0.5"/>
+                    </CheckBox.Effect>
+                </CheckBox>
             </Grid>
         </Border>
 
@@ -268,7 +286,8 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,0,0,10">
                     <TextBlock x:Name="StatusText" Text="Ready to process..." Foreground="White" FontSize="14" 
-                               TextTrimming="CharacterEllipsis" MaxWidth="700"/>
+                               TextTrimming="CharacterEllipsis" MaxWidth="700" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBlock x:Name="ProgressPercentText" Text="0%" Foreground="{StaticResource NeonCyanBrush}" 
                                FontSize="14" FontWeight="Bold" HorizontalAlignment="Right"/>
                 </Grid>
@@ -296,6 +315,7 @@
                 </Border>
             </Grid>
         </Border>
+
 
         <!-- Log Section -->
         <Border Grid.Row="4" Background="{StaticResource DarkCardBrush}" CornerRadius="10" Padding="15" Margin="0,0,0,15">

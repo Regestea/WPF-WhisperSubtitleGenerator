@@ -12,6 +12,10 @@
   <ItemGroup>
     <PackageReference Include="Whisper.net.AllRuntimes" Version="1.9.0" />
     <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="Whisper.net.Runtime.CoreML" Version="1.9.0" />
+    <PackageReference Include="Whisper.net.Runtime.Cuda" Version="1.9.0" />
+    <PackageReference Include="Whisper.net.Runtime.Cuda.Windows" Version="1.9.0" />
+    <PackageReference Include="Whisper.net.Runtime.Vulkan" Version="1.9.0" />
   </ItemGroup>
 
   <ItemGroup>
