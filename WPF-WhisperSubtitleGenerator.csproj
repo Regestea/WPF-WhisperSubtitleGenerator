@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>1 (28).ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="1 (28).ico" />
     <Content Include="E:\LocalModels\ggml-large-v3.bin">
       <Link>Model\ggml-large-v3.bin</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

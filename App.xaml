@@ -1,8 +1,7 @@
 ﻿<Application x:Class="WPF_WhisperSubtitleGenerator.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WPF_WhisperSubtitleGenerator"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:WPF_WhisperSubtitleGenerator">
     <Application.Resources>
          
     </Application.Resources>

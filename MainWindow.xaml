@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_WhisperSubtitleGenerator"
         mc:Ignorable="d"
-        Title="Whisper Subtitle Generator" Height="700" Width="900"
+        Title="Subtitle Generator" Height="700" Width="900"
         WindowStartupLocation="CenterScreen"
         Background="#1a1a2e">
     <Window.Resources>
