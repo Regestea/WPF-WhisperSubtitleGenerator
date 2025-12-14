@@ -309,19 +309,26 @@ namespace WPF_WhisperSubtitleGenerator
             return tempPath;
         }
 
-        private static async Task WriteSrtFileAsync(string path, List<SubtitleEntry> subtitles)
+        private async Task WriteSrtFileAsync(string filePath, List<SubtitleEntry> subtitles)
         {
-            var sb = new StringBuilder();
-            
-            foreach (var entry in subtitles)
-            {
-                sb.AppendLine(entry.Index.ToString());
-                sb.AppendLine($"{FormatSrtTime(entry.Start)} --> {FormatSrtTime(entry.End)}");
-                sb.AppendLine(entry.Text);
-                sb.AppendLine();
-            }
+            using var writer = new StreamWriter(filePath, false, Encoding.UTF8);
 
-            await File.WriteAllTextAsync(path, sb.ToString(), Encoding.UTF8);
+            foreach (var subtitle in subtitles)
+            {
+                if (ExtractTextOnlyCheckBox.IsChecked == true)
+                {
+                    // Write only the text if the checkbox is checked
+                    await writer.WriteLineAsync(subtitle.Text);
+                }
+                else
+                {
+                    // Write full subtitle entry
+                    await writer.WriteLineAsync(subtitle.Index.ToString());
+                    await writer.WriteLineAsync($"{FormatSrtTime(subtitle.Start)} --> {FormatSrtTime(subtitle.End)}");
+                    await writer.WriteLineAsync(subtitle.Text);
+                    await writer.WriteLineAsync();
+                }
+            }
         }
 
         private static string FormatSrtTime(TimeSpan time)

@@ -200,7 +200,7 @@
 
         <!-- Title -->
         <TextBlock Grid.Row="0" 
-                   Text="🎬 Whisper Subtitle Generator" 
+                   Text="🎬 Subtitle Generator" 
                    FontSize="32" 
                    FontWeight="Bold" 
                    HorizontalAlignment="Center"
